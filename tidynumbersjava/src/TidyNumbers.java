@@ -1,10 +1,7 @@
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -23,30 +20,15 @@ public class TidyNumbers
 
 		long lastTidy = n;
 
-		System.out.println("current number " + n);
-
 		// n = transformIfNeeded(n);
 		while (!isTidy(n))
 		{
 			n--;
-			n = transformIfNeeded(n);
-			System.out.println(n);
+			n = transformNumber(n + "");
 			lastTidy = n;
 		}
 
 		return lastTidy;
-	}
-
-	private static long transformIfNeeded(final long n)
-	{
-		String el = n + "";
-		if (el.contains("0"))
-		{
-			final String nNumberAS = el.replaceAll("[0-9]", "9").substring(1, el.length());
-			System.out.println("transformed " + n + " to " + nNumberAS);
-			return Long.parseLong(nNumberAS);
-		}
-		return n;
 	}
 
 	private final static char ZERO = '0';
@@ -57,7 +39,6 @@ public class TidyNumbers
 		StringBuilder str = new StringBuilder(n);
 		for (int i = n.length() - 1; i > 0; i--)
 		{
-			System.out.println("checking " + str.toString());
 			char cChar = str.charAt(i);
 			// if we find a zero
 			if (cChar == ZERO)
@@ -67,23 +48,20 @@ public class TidyNumbers
 				{
 					str.setCharAt(y, NINE);
 				}
+
+
+				// get the previous char
+				char previous = str.charAt(i - 1);
+
+				// if previous is a non-zero digit
+				if (previous != ZERO)
+				{
+					// decrease one digit
+					previous--;
+					str.setCharAt(i - 1, previous);
+				}
 			}
 
-			// get the previous char
-			char previous = str.charAt(i - 1);
-
-			// if previous is a non-zero digit
-			if (previous != ZERO)
-			{
-				// decrease one digit
-				previous--;
-				str.setCharAt(i - 1, previous);
-			}
-
-
-			str.setCharAt(i, cChar);
-
-			System.out.println("after => " + str.toString());
 		}
 
 		return Long.parseLong(str.toString());
@@ -93,7 +71,6 @@ public class TidyNumbers
 	{
 		if (n < 0)
 		{
-			System.out.println("fucking thing!" + n);
 			return true;
 		}
 		final String elements = (n + "");
@@ -112,8 +89,7 @@ public class TidyNumbers
 
 	public static void main(String[] args) throws IOException
 	{
-		System.out.println("transformed " + transformNumber("10101"));
-		// runProgram();
+		runProgram();
 	}
 
 	private static void runProgram() throws IOException
